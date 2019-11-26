@@ -12,7 +12,7 @@ def build_test_table():
         );"
     return(sql)
 
-db = DB()
-db.execute_sql(build_test_table())
+#db = DB()
+#db.execute_sql(build_test_table())
 
 
