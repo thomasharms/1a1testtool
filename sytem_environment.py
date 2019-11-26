@@ -2,8 +2,8 @@ import platform, re, subprocess, os
 
 class System_Environment():
 
-    __patterns = {"bash_file_name_pattern": r".*?\.sh$",
-                "bash_file_pattern" : r"^#!\/bin\/bash.*?"
+    __patterns = {  "bash_file_name_pattern": r".*?\.sh$",
+                    "bash_file_pattern" : r"^#!\/bin\/bash.*?"
                 }
 
     def __init__(self):
@@ -15,9 +15,10 @@ class System_Environment():
 
     def get_bash_location(self):
         try:
-            self.bash_location = str(subprocess.check_output(['which', 'bash']))
+            self.bash_location = subprocess.check_output(['which', 'bash']).decode()
         except Exception as e:
             # TODO WINDOWS BEHAVIOUR FOR BASH INPUT
+            print("No bash location found with error: %s " % (str(e)))
             pass
 
     # get source type of test suite
@@ -40,8 +41,25 @@ class System_Environment():
     def set_pwd(self):
         self.pwd = os.getcwd()
 
-    def check_bash_file(self, file_name):
-        bash_pattern = 
-        prog = re.compile(bash_pattern, , re.MULTILINE)
-        result = prog.findall(file_name)
+    # file is a path and not just a name
+    def check_bash_file(self, filepath):
+        prog = re.compile(self.__patterns['bash_file_name_pattern'], re.MULTILINE)
+        result = prog.findall(filepath)
+        if result:
+            return True
+        else:
+            return False
+
+    # file is a path and not just a name
+    def check_bash_file_content(self, filepath):
+        proper_bash_file = False
+        if self.bash_location:
+            with open(filepath, 'r') as f:
+                content = f.read()
+                prog = re.compile(self.__patterns['bash_file_pattern'], re.MULTILINE)
+                result = prog.findall(content)
+                if result: proper_bash_file = True
+        return proper_bash_file
+
+            
 

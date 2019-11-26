@@ -18,6 +18,5 @@ else:
 
 #subprocess.call(pwd/bashtest.sh')
 #r = subprocess.run(['ls', '-lha'])
-r = subprocess.check_output(['which', 'bash'])
-print("r ist : ...........")
-print(r)
+r = subprocess.check_output(['which', 'bash']).decode()
+print(str(r))
