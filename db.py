@@ -40,6 +40,7 @@ class DB:
 
     # expecting data_dict as dictionary of {attribute_name, value}
     def save_test(self, data_dict):
+
         count = 0
         attribute_names = data_dict.keys()
         max_count = len(attribute_names) - 1
@@ -72,6 +73,15 @@ class DB:
         #commit changes
         self.__con.commit()
 
+    # sqlite v3.3 enabled "table not exists" queries
+    # to be sure functionality is there, use this function for now
+    def check_table_exists(self):
+        sql = 'SELECT name FROM sqlite_master WHERE type=\'table\' AND name= \'%s\'' % self.__table_tests
+        self.__cursor.execute(sql)
+        result = self.__cursor.fetchall()
+        if result: return True
+        else: return False
+
 
     def get_test_data(self):
         sql = "SELECT * FROM " + self.__table_tests
@@ -80,19 +90,24 @@ class DB:
         return result_set
 
     def build_test_table(self):
-        sql = "CREATE TABLE `testenv` (\
-	        `id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,\
-            `testname`	TEXT NOT NULL,\
-            `environment`	TEXT NOT NULL,\
-            `start`	INTEGER NOT NULL,\
-            `finish`	INTEGER NOT NULL,\
-            `logs`	TEXT NOT NULL,\
-            `status`	INTEGER NOT NULL\
-        );"
-        return(sql)
+        if not self.check_table_exists():
+            sql = "CREATE TABLE `testenv` (\
+                `id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,\
+                `testname`	TEXT NOT NULL,\
+                `environment`	TEXT NOT NULL,\
+                `start`	INTEGER NOT NULL,\
+                `finish`	INTEGER NOT NULL,\
+                `logs`	TEXT NOT NULL,\
+                `status`	INTEGER NOT NULL\
+            );"
+            # execute creation
+            self.__cursor.execute(sql)
+            #commit changes
+            self.__con.commit()
+
 db = DB()
 #db.execute_sql(db.build_test_table())
-testdic = {'testname': 'testname1', 'environment': 'env1', 'start': 22, 'finish': 3324, 'logs': 'nologfile','status': 3}
-db.save_test(testdic)
-print(db.get_test_data())
+#testdic = {'testname': 'testname1', 'environment': 'env1', 'start': 22, 'finish': 3324, 'logs': 'nologfile','status': 3}
+#db.save_test(testdic)
+
 
