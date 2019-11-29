@@ -1,37 +1,40 @@
 from system_environment import System_Environment
-import os, sys
+from pytesttool import Test_Handler
+import os, sys, subprocess
 
 class Main_Controller():
 
+    # list of test files and bash files
+    __test_file_list = list()
+    __bash_file_list = list()
+
+    __test_handler = None
+
     def __init__(self):
         self.system_environment = System_Environment()
+        self.set_test_file_list()
+        self.set_bash_file_list()
+        self.set_test_handler()
         self.main()
 
     def main(self):
         pass
-''' 
-    def run_test_suite(self):
-        self.validate_test_path()
 
-    def validate_test_path(self):
-        #self.system_environment.get_test_source_type(self.test_source)
-        if self.system_environment.source_type == "folder":
+    def set_test_file_list(self):
+        self.__test_file_list = list(self.system_environment.discover_test_files())
 
-            #TODO implement folder test
-            
-            print("folder")
-            pass
+    def set_bash_file_list(self):
+        self.__bash_file_list = list(self.system_environment.discover_bash_files())
 
-        elif self.system_environment.source_type == "file":
-            print("file")
-            #TODO implement file test test or bash
-            pass
-        
-        elif not self.system_environment.source_type:
-            #print("\n\n Folder or file does not exist at: \n %s \n" % (self.test_source))
-            # start over, returns to main menu to provide opportunity to exit
-            pass
-'''
+    def set_test_handler(self):
+        self.__test_handler = Test_Handler(self.system_environment, self.__test_file_list, self.__bash_file_list)
+
 if __name__ == "__main__":
     main_task = Main_Controller()
-    print(main_task.system_environment.discover_files())
+    subprocess.run(['chmod', '777', main_task.system_environment.get_test_file_list().pop(0)])
+    sys.stdout = open('file.t', 'w')
+    subprocess.run(['pytest', '--capture=fd', main_task.system_environment.get_test_file_list().pop(0)])
+
+
+    #subprocess.call(main_task.system_environment.get_bash_file_list())
+    

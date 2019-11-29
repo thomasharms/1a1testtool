@@ -8,7 +8,7 @@ class System_Environment():
                     "test_file_end_pattern" : r"^.*?_test\.py$"
                 }
 
-    __test_folder_name = "/Test_Repo"
+    __test_folder_name = "/Test_Repo/"
     
     __venv_amount = 3
     # repository of test files
@@ -45,18 +45,24 @@ class System_Environment():
             pass
     
     # look for files in Repository folder
-    def discover_files(self):
+    def discover_test_files(self):
 
         #working with set to avoid duplicates
         files = set()
-
-        # 1st find test files
         files.update(self.get_test_file_list())
-
-        # 2nd find bash files
-        files.update(self.get_bash_file_list())
-
         return files
+
+    def discover_bash_files(self):
+        
+        #working with set to avoid duplicates
+        files = set()
+        files.update(self.get_bash_file_list())
+        return files
+    
+    # that is very ugly and should be done smarter
+    # for demo purposes this is the easiest way to ensure file permissions
+    def set_file_permissions(self, filepath):
+        subprocess.run(['chmod', '777', filepath])
 
     def set_os_type(self):
         self._os_type = platform.system()
@@ -85,13 +91,13 @@ class System_Environment():
         else: return False
 
     def get_bash_file_list(self):
-        return [x for x in os.listdir(self._repo_dir) if self.check_bash_file(x)]
+        return [self._repo_dir+x for x in os.listdir(self._repo_dir) if self.check_bash_file(x)]
 
     # pytest is able to do this as well, but in order to implement concurrency this is neccessary
     # get test file list in a directory
     # parsing for test_ or _test.py patterns
     def get_test_file_list(self):
-        return [x for x in os.listdir(self._repo_dir) if self.check_test_file_start_pattern(x) or self.check_test_file_end_pattern(x)]
+        return [self._repo_dir+x for x in os.listdir(self._repo_dir) if self.check_test_file_start_pattern(x) or self.check_test_file_end_pattern(x)]
         
     # checks whether a bash file is sort of properly constructed
     def check_bash_file_content(self, filepath):

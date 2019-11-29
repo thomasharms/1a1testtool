@@ -12,6 +12,8 @@ table_schema:
     `status`	    INTEGER NOT NULL
     `insertion`	    INTEGER NOT NULL
 '''
+
+
 class DB:
     __con = 0
     __cursor = 0
