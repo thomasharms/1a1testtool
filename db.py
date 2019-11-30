@@ -119,6 +119,13 @@ class DB:
         self.__cursor.execute(sql)
         self.__con.commit()
 
+    def show_last_tests(self, test_count):
+        sql = "SELECT testname, environment, teststart, testfinish, logs, status, insertion FROM "+self.__table_tests+" ORDER BY insertion DESC LIMIT %s;" % str(test_count)
+        self.__cursor.execute(sql)
+
+        result = self.__cursor.fetchall()
+        return result
+
 #db = DB()
 #db.execute_sql(db.build_test_table())
 #testdic = {'testname': 'testname1', 'environment': 'env1', 'start': 22, 'finish': 3324, 'logs': 'nologfile','status': 3}
