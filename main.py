@@ -31,7 +31,4 @@ class Main_Controller():
 
 if __name__ == "__main__":
     main_task = Main_Controller()
-
-
-    #subprocess.call(main_task.system_environment.get_bash_file_list())
     
