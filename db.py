@@ -1,4 +1,4 @@
-import sqlite3
+import sqlite3, time
 
 '''
 table_schema:
@@ -9,7 +9,7 @@ table_schema:
     `start`	        INTEGER NOT NULL,
     `finish`	    INTEGER NOT NULL,
     `logs`	        TEXT NOT NULL,
-    `status`	    INTEGER NOT NULL
+    `status`	    TEXT NOT NULL,
     `insertion`	    INTEGER NOT NULL
 '''
 
@@ -39,6 +39,10 @@ class DB:
     def execute_sql(self, sql):
         self.__cursor.execute(sql)
         self.__con.commit()
+
+    def init_test(self, data_dict):
+        data_dict['insertion'] = time.time()
+        self.save_test(data_dict)
 
     # expecting data_dict as dictionary of {attribute_name, value}
     def save_test(self, data_dict):
@@ -107,7 +111,15 @@ class DB:
             #commit changes
             self.__con.commit()
 
-db = DB()
+    def delete_quotes(self, sample):
+        return sample.replace("'"," ")
+
+    def update_param_by_name(self, testname, var_name, var_value):
+        sql = "UPDATE "+self.__table_tests+" SET "+var_name+ " = ' "+self.delete_quotes(str(var_value))+" ' WHERE testname = '"+testname+"';"
+        self.__cursor.execute(sql)
+        self.__con.commit()
+
+#db = DB()
 #db.execute_sql(db.build_test_table())
 #testdic = {'testname': 'testname1', 'environment': 'env1', 'start': 22, 'finish': 3324, 'logs': 'nologfile','status': 3}
 #db.save_test(testdic)

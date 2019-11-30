@@ -40,8 +40,11 @@ class System_Environment():
     def get_amount_venv(self):
         return self.__venv_amount
 
+    def get_venv_pytest_target(self, venv_number):
+        return os.path.dirname(sys.argv[0])+'/venv'+str(venv_number+1)+'/bin/pytest'
+
     def get_venv_py_target(self, venv_number):
-        return os.path.dirname(sys.argv[0])+'venv'+venv_number+'/bin/python3'
+        return os.path.dirname(sys.argv[0])+'/venv'+str(venv_number+1)+'/bin/python3'
 
     def get_bash_location(self):
         try:
@@ -112,15 +115,6 @@ class System_Environment():
                 if result: proper_bash_file = True
         return proper_bash_file
 
-    
-class Virtual_Environment_Controller():
-
-    def __init__(self):
-        pass
-
-#subprocess.run(['python3', '-m', 'venv', os.path.dirname(sys.argv[0])+'/venv1/'])
-#subprocess.call([os.path.dirname(sys.argv[0])+'/venv1/bin/pip3', 'install', 'pytest'])
-subprocess.run([os.path.dirname(sys.argv[0])+'/venv1/bin/python3', os.path.dirname(sys.argv[0])+'/init.py'])
 
             
 

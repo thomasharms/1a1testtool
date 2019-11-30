@@ -2,6 +2,7 @@ from db import DB
 import subprocess, os, sys
 
 def build_test_table():
+    db = DB()
     sql = "CREATE TABLE `testenv` (\
 	        `id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,\
             `testname`	TEXT NOT NULL,\
@@ -11,7 +12,7 @@ def build_test_table():
             `logs`	TEXT NOT NULL,\
             `status`	INTEGER NOT NULL\
         );"
-    return(sql)
+    db.execute_sql(sql)
 
 # fixed for three environments
 #  TODO implemented in a more flexible fashion regarding amounts of venvs
@@ -26,8 +27,8 @@ def install_pytest():
     subprocess.call([os.path.dirname(sys.argv[0])+'/venv2/bin/pip3', 'install', 'pytest'])
     subprocess.call([os.path.dirname(sys.argv[0])+'/venv3/bin/pip3', 'install', 'pytest'])
 
-#db = DB()
-#db.execute_sql(build_test_table())
-#build_virtual_environments()
+#build_test_table()
+build_virtual_environments()
+install_pytest()
 
 

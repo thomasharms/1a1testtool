@@ -18,7 +18,7 @@ class Main_Controller():
         self.main()
 
     def main(self):
-        pass
+        self.__test_handler.test_files()
 
     def set_test_file_list(self):
         self.__test_file_list = list(self.system_environment.discover_test_files())
@@ -31,8 +31,6 @@ class Main_Controller():
 
 if __name__ == "__main__":
     main_task = Main_Controller()
-    subprocess.run(['chmod', '777', main_task.system_environment.get_test_file_list().pop(0)])
-    subprocess.run(['pytest', '--capture=fd', main_task.system_environment.get_test_file_list().pop(0)])
 
 
     #subprocess.call(main_task.system_environment.get_bash_file_list())

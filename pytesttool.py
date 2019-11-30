@@ -1,4 +1,5 @@
-import pytest, subprocess
+import pytest, subprocess, time
+from db import DB
 
 class Test_Task():
 
@@ -7,25 +8,61 @@ class Test_Task():
     start = 0
     finish = 0
 
-    # 0 about to start, preparing
-    # 1 running
-    # 2 finished
-    status = 0
-    logs = ""
+    # preparing
+    # running
+    # finished
+    status = 'preparing'
+    logs = "no entry"
 
-    def __init(self, test_file, venv_py_target):
+    def __init__(self, test_file, venv_pytest_target):
         self.test_file = test_file
-        self.venv_py_target = venv_py_target
-        self.set_permissions()
+        self.venv_pytest_target = venv_pytest_target
+        self.set_test_name()
+        self.prepare_test()
         self.run_test()
-
-    
+        self.post_process_test()
 
     def run_test(self):
         try:
-            subprocess.run([self.venv_py_target, self.test_file])
+            self.set_status_running()
+            r = subprocess.run([self.venv_pytest_target, self.test_file])
+            self.logs = str(r)
         except Exception as e:
-            print(str(e))
+            self.logs = str(e)
+
+    # set parameters and handle db save procedures before test starts
+    def prepare_test(self):
+        self.set_permissions()
+        self.start = time.time()
+        db = DB()
+        db.init_test(self.set_test_data_save_params())
+
+    def post_process_test(self):
+        self.finish = time.time()
+        db = DB()
+        db.update_param_by_name(self.testname, 'testfinish', self.finish)
+        self.status = 'finished'
+        db.update_param_by_name(self.testname, 'status', self.status)
+        db.update_param_by_name(self.testname, 'logs', self.logs)
+
+    def set_status_running(self):
+        db = DB()
+        self.status = 'running'
+        db.update_param_by_name(self.testname, 'status', self.status)
+
+    def set_test_data_save_params(self):
+        data_dict = dict()
+        data_dict['testname'] = self.testname
+        data_dict['status'] = self.status
+        data_dict['teststart'] = self.start
+        data_dict['testfinish'] = self.finish
+        data_dict['logs'] = self.logs
+        data_dict['environment'] = self.environment
+        return data_dict
+
+    def set_test_name(self):
+        self.testname = str(self.test_file)+'__'+str(int(time.time()))
+        self.environment = self.venv_pytest_target
 
     # this is really ugly, but for now there is no way to get around it for demo purposes
     def set_permissions(self):
@@ -51,7 +88,7 @@ class Test_Handler():
         self.init_venv_locks()
 
     def set_venv_path(self, venv_number):
-        return self.__sys_env.get_venv_py_target(venv_number)
+        return self.__sys_env.get_venv_pytest_target(venv_number)
 
     def set_file_lists(self, test_file_list, bash_file_list):
         self.__test_file_list = test_file_list
@@ -67,6 +104,7 @@ class Test_Handler():
         free = 0
         found = False
         while free < self.__sys_env.get_amount_venv() and not found:
+            # lock is True if locked
             if self.__venv_locks[free]:
                 free += 1
             else: found = True
@@ -75,7 +113,7 @@ class Test_Handler():
 
     # lock a venv if used
     def lock_venv(self, channel):
-        while not self.__venv_locks[channel]:
+        while self.__venv_locks[channel]:
             pass
         self.__venv_locks[channel] = True
 
@@ -93,13 +131,9 @@ class Test_Handler():
             self.assign_test_to_venv(active_test)
 
     def assign_test_to_venv(self, test_file):
-        channel = False
-        while not channel:
+        channel = -1
+        while channel < 0:
             channel = self.check_free_venv()
         self.lock_venv(channel)
         Test_Task(test_file, self.set_venv_path(channel))
         self.unlock_venv(channel)
-
-
-#subprocess.call(pwd/bashtest.sh')
-#subprocess.run(['ls', '-lha'])
