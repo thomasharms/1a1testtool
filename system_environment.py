@@ -34,6 +34,9 @@ class System_Environment():
     def set_repo_dir(self):
         self._repo_dir = os.path.dirname(sys.argv[0])+self.__test_folder_name
 
+    def get_test_repo(self):
+        return self._repo_dir
+
     def set_cwd(self):
         self.cwd = os.path.dirname(sys.argv[0])
 

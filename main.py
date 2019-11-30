@@ -18,7 +18,7 @@ class Main_Controller():
         self.main()
 
     def main(self):
-        self.__test_handler.test_files()
+        self.__test_handler.main()
 
     def set_test_file_list(self):
         self.__test_file_list = list(self.system_environment.discover_test_files())
