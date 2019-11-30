@@ -32,7 +32,6 @@ class Main_Controller():
 if __name__ == "__main__":
     main_task = Main_Controller()
     subprocess.run(['chmod', '777', main_task.system_environment.get_test_file_list().pop(0)])
-    sys.stdout = open('file.t', 'w')
     subprocess.run(['pytest', '--capture=fd', main_task.system_environment.get_test_file_list().pop(0)])
 
 

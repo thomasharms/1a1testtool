@@ -69,7 +69,7 @@ class DB:
                 count += 1
             elif count == max_count:
                 sql = sql + str(data_dict[key]) + '\') '
-        print(sql)
+        
         # execute insertion
         self.__cursor.execute(sql)
         #commit changes

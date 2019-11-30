@@ -7,20 +7,23 @@ class Test_Task():
     start = 0
     finish = 0
 
-    # 0 about to start
+    # 0 about to start, preparing
     # 1 running
     # 2 finished
     status = 0
     logs = ""
 
-    def __init(self, test_file):
+    def __init(self, test_file, venv_py_target):
         self.test_file = test_file
+        self.venv_py_target = venv_py_target
         self.set_permissions()
         self.run_test()
 
+    
+
     def run_test(self):
         try:
-            subprocess.run(['pytest', self.test_file])
+            subprocess.run([self.venv_py_target, self.test_file])
         except Exception as e:
             print(str(e))
 
@@ -47,9 +50,12 @@ class Test_Handler():
         # lock will be False if unused(unlocked), True if used(locked)
         self.init_venv_locks()
 
+    def set_venv_path(self, venv_number):
+        return self.__sys_env.get_venv_py_target(venv_number)
+
     def set_file_lists(self, test_file_list, bash_file_list):
-        self.__test_file_list = self.prepare_files(test_file_list)
-        self.__bash_file_list = self.prepare_files(bash_file_list)
+        self.__test_file_list = test_file_list
+        self.__bash_file_list = bash_file_list
 
     def init_venv_locks(self):
         for _ in range(self.__sys_env.get_amount_venv()):
@@ -84,20 +90,16 @@ class Test_Handler():
     def test_files(self):
         while self.__test_file_list:
             active_test = self.__test_file_list.pop(0)
-            # active_test
-
-    # set file permissions for the files to be tested and bash scripts to be able to access them
-    def prepare_files(self, filelist):
-        return [self.__sys_env.set_file_permissions(f) for f in filelist]
+            self.assign_test_to_venv(active_test)
 
     def assign_test_to_venv(self, test_file):
         channel = False
         while not channel:
             channel = self.check_free_venv()
         self.lock_venv(channel)
-        test = Test_Task(test_file)
+        Test_Task(test_file, self.set_venv_path(channel))
         self.unlock_venv(channel)
 
 
 #subprocess.call(pwd/bashtest.sh')
-#r = subprocess.run(['ls', '-lha'])
+#subprocess.run(['ls', '-lha'])

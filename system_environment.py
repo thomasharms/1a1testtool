@@ -26,6 +26,7 @@ class System_Environment():
 
         # get destination of the working directory file has been executed in,
         # sys pointer is located and bash location folder
+        self.set_cwd()
         self.set_pwd()
         self.set_repo_dir()
         self.get_bash_location()
@@ -33,8 +34,14 @@ class System_Environment():
     def set_repo_dir(self):
         self._repo_dir = os.path.dirname(sys.argv[0])+self.__test_folder_name
 
+    def set_cwd(self):
+        self.cwd = os.path.dirname(sys.argv[0])
+
     def get_amount_venv(self):
         return self.__venv_amount
+
+    def get_venv_py_target(self, venv_number):
+        return os.path.dirname(sys.argv[0])+'venv'+venv_number+'/bin/python3'
 
     def get_bash_location(self):
         try:
@@ -58,11 +65,6 @@ class System_Environment():
         files = set()
         files.update(self.get_bash_file_list())
         return files
-    
-    # that is very ugly and should be done smarter
-    # for demo purposes this is the easiest way to ensure file permissions
-    def set_file_permissions(self, filepath):
-        subprocess.run(['chmod', '777', filepath])
 
     def set_os_type(self):
         self._os_type = platform.system()
@@ -109,6 +111,16 @@ class System_Environment():
                 result = prog.findall(content)
                 if result: proper_bash_file = True
         return proper_bash_file
+
+    
+class Virtual_Environment_Controller():
+
+    def __init__(self):
+        pass
+
+#subprocess.run(['python3', '-m', 'venv', os.path.dirname(sys.argv[0])+'/venv1/'])
+#subprocess.call([os.path.dirname(sys.argv[0])+'/venv1/bin/pip3', 'install', 'pytest'])
+subprocess.run([os.path.dirname(sys.argv[0])+'/venv1/bin/python3', os.path.dirname(sys.argv[0])+'/init.py'])
 
             
 
