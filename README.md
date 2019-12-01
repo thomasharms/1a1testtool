@@ -8,7 +8,7 @@ You can set up the tool within a couple of easy steps. System requirements are d
 
 ### Requirements
 
-The only known requirement would be having a proper installation of Python 3.6 or higher installed as well as up and running. 
+The only known requirement would be having a proper installation of Python 3.6 or higher installed as well as up and running. The testing tool will run on Linux and Mac OSX while Windows support might follow soon.
 
 ### Installing
 
@@ -20,6 +20,8 @@ In case no Exception has been risen some virtual environments have been installe
 Now you should be good to go.
 
 ## Running the Tests
+
+### Running Test Files
 
 The most interesting folder in order to run tests is called Test_Repo. You can just put your test files or bash files in there and they will automatically be tested. For demonanstration puposes there are a couple of pretailored tests already in there, so you could explore how it works.
 In order to run a tests you can use the main.py script. You can do that by:
@@ -34,6 +36,18 @@ python3 /path/to/the/program/main.py
 ```
 
 All tests will be run parallel, or more precise concurrent. The results will be put out via stdout as well as saved in the database.
+
+### Running Self Evaluating Tests
+
+The tool is able to evaluate the functionality of its own behaviour. It is accomplishing that by using the tests defined in the script "test_selftest.py". In order to run a test on the tool itself, simply run shell:
+* out of the main program folder:
+```
+python3 selftest.py
+```
+* run from shell:
+```
+python3 /path/to/the/program/selftest.py
+```
 
 ## Show Test Results
 

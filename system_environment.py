@@ -117,7 +117,3 @@ class System_Environment():
                 result = prog.findall(content)
                 if result: proper_bash_file = True
         return proper_bash_file
-
-
-            
-

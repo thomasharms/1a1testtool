@@ -205,11 +205,11 @@ class Test_Handler():
 
     def main(self):
         
-        threads = [ threading.Thread(target=self.test_file) for _i in range(len(self.__test_file_list)) ]
+        threads = [threading.Thread(target=self.test_file) for _i in range(len(self.__test_file_list))]
         for thread in threads:
             thread.start()
         
-        bash_threads = [ threading.Thread(target=self.test_bash_file) for _i in range(len(self.__bash_file_list)) ]
+        bash_threads = [threading.Thread(target=self.test_bash_file) for _i in range(len(self.__bash_file_list))]
         for bthread in bash_threads:
             bthread.start()
             
