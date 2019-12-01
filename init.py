@@ -1,6 +1,12 @@
 from db import DB
 import subprocess, os, sys
 
+def build_root_dir_permissions():
+    try:
+        subprocess.run(['chmod', '777', os.path.dirname(sys.argv[0])])
+    except Exception as e:
+        print(str(e))
+
 # fixed for three environments
 #  TODO implemented in a more flexible fashion regarding amounts of venvs
 def build_virtual_environments():
@@ -21,6 +27,7 @@ def build_db_table():
     except Exception as e:
         print(str(e))
 
+build_root_dir_permissions()
 build_db_table()
 build_virtual_environments()
 install_pytest()

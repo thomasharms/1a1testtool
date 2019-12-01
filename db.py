@@ -101,8 +101,8 @@ class DB:
                 `id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,\
                 `testname`	TEXT NOT NULL,\
                 `environment`	TEXT NOT NULL,\
-                `start`	INTEGER NOT NULL,\
-                `finish`	INTEGER NOT NULL,\
+                `teststart`	INTEGER NOT NULL,\
+                `testfinish`	INTEGER NOT NULL,\
                 `logs`	TEXT NOT NULL,\
                 `status`	INTEGER NOT NULL\
             );"
