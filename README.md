@@ -67,7 +67,8 @@ python3 /path/to/the/program/testresults.py
 
 ## Test Framework
 
-The chosen framework is PyTest.
+* The chosen framework is PyTest. 
+* The database environment is built on Python3 sqlite3 package. There is no need to deploy any heavy frameworks as pymysql or similar choices.
 
 ## Versioning
 
