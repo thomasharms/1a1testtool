@@ -14,12 +14,12 @@ The only known requirement would be having a proper installation of Python 3.6 o
 
 The files are available at [the projects git repository](https://github.com/thomasharms/1a1testtool.git). Feel free to fork or clone ahead. After downloading the files first install the environment and the database by running the init.py file. This can be easily achieved by navigating to the folder containing the files by using a shell. Just run in a shell: 
 ```
-python3 init.py
+python3 ./init.py
 ```
 * In case no Exception has been risen some virtual environments have been installed along with the needed packages and dependencies as well as the database and tables needed had been built.
 * If you run into permission problems, try to run the script as superuser.
 ```
-sudo python3 init.py
+sudo python3 ./init.py
 ```
 Now you should be good to go.
 
@@ -32,7 +32,7 @@ A test can be run by using the main.py script. You can do that by:
 
 * navigating in your shell to the program folder and run:
 ```
-python3 main.py
+python3 ./main.py
 ```
 * run in your shell:
 ```
@@ -46,7 +46,7 @@ All the tests in the repository folder will be run parallel, or more precisely: 
 The tool is able to evaluate the functionality of its own behaviour. It is accomplishing that by using the tests defined in the script "test_selftest.py". In order to run a test on the tool itself, simply run shell:
 * out of the main program folder:
 ```
-python3 selftest.py
+python3 ./selftest.py
 ```
 * run from shell:
 ```
@@ -58,7 +58,7 @@ python3 /path/to/the/program/selftest.py
 There is a demonstration procedure running for now, showing you the last 10 test results. This could be improved in a more conveniened fashion in the future. In order to see these results by shell you do either of the following steps:
 * navigating in your shell to the program folder and run:
 ```
-python3 testresults.py
+python3 ./testresults.py
 ```
 * run in your shell:
 ```

@@ -105,6 +105,7 @@ class DB:
                 `testfinish`	INTEGER NOT NULL,\
                 `logs`	TEXT NOT NULL,\
                 `status`	INTEGER NOT NULL\
+                `insertion`	INTEGER NOT NULL\
             );"
             # execute creation
             self.__cursor.execute(sql)
