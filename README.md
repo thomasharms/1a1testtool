@@ -16,7 +16,11 @@ The files are available at [the projects git repository](https://github.com/thom
 ```
 python3 init.py
 ```
-In case no Exception has been risen some virtual environments have been installed along with the needed packages and dependencies as well as the database and tables needed had been built.
+* In case no Exception has been risen some virtual environments have been installed along with the needed packages and dependencies as well as the database and tables needed had been built.
+* If you run into permission problems, try to run the script as superuser.
+```
+sudo python3 init.py
+```
 Now you should be good to go.
 
 ## Running the Tests
@@ -72,5 +76,3 @@ For the versions available, see the [tags on this repository](https://github.com
 ## Authors
 
 * **Thomas Harms** - *Initial work* - [Thomas Harms](https://github.com/thomasharms)
-
-
